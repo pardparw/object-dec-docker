@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      # Map host port to container port (default 5001:5001)
+      # You can override with PORT=6000 docker compose up
+      - "${PORT:-5001}:${PORT:-5001}"
+    environment:
+      - TARGET_IP=host.docker.internal
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - .:/app
+    # Ensure hot-reloading if user changes python files (though main.py needs to restart to pick up changes usually, unless using nodemon/watchdog. 
+    # For now, volume mapping allows editing without rebuilding image for code changes, assuming manual restart).
