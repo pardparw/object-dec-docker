@@ -8,6 +8,7 @@ services:
     environment:
       - TARGET_IP=host.docker.internal
       - PYTHONUNBUFFERED=1
+      - PORT=${PORT:-5001}
     volumes:
       - .:/app
     # Ensure hot-reloading if user changes python files (though main.py needs to restart to pick up changes usually, unless using nodemon/watchdog. 
