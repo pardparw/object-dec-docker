@@ -38,5 +38,32 @@ PORT=6000 docker compose up
 
 ## Troubleshooting
 
-*   **"Waiting for connection..."**: The server is ready. Connect your client (Unity) to the local IP of the machine running Docker (or `localhost` if on the same machine) on port `5001`.
 *   **Ultralytics Settings Stuck**: If the logs hang at "Creating settings", just wait a moment. The `Dockerfile` has fixes included (`PYTHONUNBUFFERED=1`) to prevent actual hangs.
+
+## Move to Another PC (Offline Method)
+
+If you cannot build on the new PC (e.g., "Error finding image" or no internet), use this method to copy the working setup from your current PC.
+
+### 1. On THIS PC (Where it works)
+Save the docker image to a file:
+
+```bash
+# 1. Build the image first to make sure it's latest
+docker compose build
+
+# 2. Save it to a file
+docker save -o object-dec-app.tar object-dec-docker-app
+```
+
+Copy the file `object-dec-app.tar` to your USB drive or transfer it to the new PC.
+
+### 2. On the NEW PC
+Load the image and run:
+
+```bash
+# 1. Load the image
+docker load -i object-dec-app.tar
+
+# 2. Run it (using the image name loaded, usually object-dec-docker-app)
+docker run -p 5001:5001 -e TARGET_IP=host.docker.internal object-dec-docker-app
+```
